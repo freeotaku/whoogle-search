@@ -9,10 +9,7 @@
   {"name": "Hong Kong", "value": "countryHK"},
   {"name": "India", "value": "countryIN"},
   {"name": "Japan", "value": "countryJP"},
-  {"name": "Korea, Democratic People\"s Republic of",
-    "value": "countryKP"},
   {"name": "Korea, Republic of", "value": "countryKR"},
-  {"name": "Mexico", "value": "countryMX"}
   {"name": "Russian Federation", "value": "countryRU"},
   {"name": "Taiwan", "value": "countryTW"},
   {"name": "United Kingdom", "value": "countryUK"},
