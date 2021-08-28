@@ -166,7 +166,7 @@
     },
     "lang_ja": {
         "search": "検索",
-        "config": "配置",
+        "config": "設定",
         "config-country": "国別に検索結果を絞り込む",
         "config-country-help": "有効にすると、選択した国でホストされているウェブサイトのみが検索結果に表示されます。",
         "config-lang": "言語",
