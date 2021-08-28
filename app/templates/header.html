@@ -1,12 +1,10 @@
 {% if mobile %}
     <header>
+        <div class="center">
+            <h1>The Greatest Search Engine</h1>
+        </div>
         <div class="bz1lBb header-div">
-            <form class="search-form Pg70bf" id="search-form" method="POST">
-                <a class="logo-link mobile-logo" href="/">
-                    <div id="mobile-header-logo">
-                        {{ logo|safe }}
-                    </div>
-                </a>
+            <form class="search-form Pg70bf" id="search-form" method="POST"
                 <div class="H0PQec mobile-input-div">
                     <div class="sbc esbc autocomplete">
                         <input 
@@ -31,12 +29,8 @@
     </header>
 {% else %}
     <header>
-        <div class="logo-div">
-            <a class="logo-link" href="/">
-                <div class="desktop-header-logo">
-                    {{ logo|safe }}
-                </div>
-            </a>
+        <div class="center">
+            <h1>The Greatest Search Engine</h1>
         </div>
         <div class="search-div">
             <form id="search-form" class="search-form" id="sf" method="POST">
