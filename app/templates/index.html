@@ -62,7 +62,8 @@
 							autocapitalize="none"
 							spellcheck="false"
 							autocorrect="off"
-							autocomplete="off">
+							autocomplete="off"
+						        dir="auto">
 					</div>
 					<input type="submit" id="search-submit" value="{{ translation['search'] }}">
 				</div>
@@ -115,11 +116,19 @@
 				</div>
 				<div class="config-div config-div-near">
 					<label for="config-near">{{ translation['config-near'] }}: </label>
-					<input type="text" name="near" id="config-near" placeholder="City Name" value="{{ config.near }}">
+					<input type="text" name="near" id="config-near" placeholder="{{ translation['config-near-help'] }}" value="{{ config.near }}">
 				</div>
 				<div class="config-div config-div-block">
 					<label for="config-block">{{ translation['config-block'] }}: </label>
-					<input type="text" name="block" id="config-block" placeholder="Comma-separated site list" value="{{ config.block }}">
+					<input type="text" name="block" id="config-block" placeholder="{{ translation['config-block-help'] }}" value="{{ config.block }}">
+				</div>
+                <div class="config-div config-div-block">
+					<label for="config-block-title">{{ translation['config-block-title'] }}: </label>
+					<input type="text" name="block_title" id="config-block" placeholder="{{ translation['config-block-title-help'] }}" value="{{ config.block_title }}">
+				</div>
+				<div class="config-div config-div-block">
+					<label for="config-block-url">{{ translation['config-block-url'] }}: </label>
+					<input type="text" name="block_url" id="config-block" placeholder="{{ translation['config-block-url-help'] }}" value="{{ config.block_url }}">
 				</div>
 				<div class="config-div config-div-nojs">
 					<label for="config-nojs">{{ translation['config-nojs'] }}: </label>
@@ -174,7 +183,10 @@
 					<input type="text" name="url" id="config-url" value="{{ config.url }}">
 				</div>
 				<div class="config-div config-div-custom-css">
-					<label for="config-style">{{ translation['config-css'] }}:</label>
+					<a id="css-link"
+						href="https://github.com/benbusby/whoogle-search/wiki/User-Contributed-CSS-Themes">
+						{{ translation['config-css'] }}:
+					</a>
 					<textarea
 					name="style"
 					id="config-style"

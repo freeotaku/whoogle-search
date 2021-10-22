@@ -70,6 +70,11 @@
       "value": "lingva.ml",
       "required": false
     },
+    "WHOOGLE_ALT_MD": {
+      "description": "The site to use as a replacement for medium.com when site alternatives are enabled in the config.",
+      "value": "scribe.rip",
+      "required": false
+    },
     "WHOOGLE_CONFIG_COUNTRY": {
         "description": "[CONFIG] The country to use for restricting search results (use values from https://raw.githubusercontent.com/benbusby/whoogle-search/develop/app/static/settings/countries.json)",
         "value": "",
@@ -107,6 +112,11 @@
     },
     "WHOOGLE_CONFIG_ALTS": {
         "description": "[CONFIG] Use social media alternatives (set to 1 or leave blank)",
+        "value": "",
+        "required": false
+    },
+    "WHOOGLE_CONFIG_NEAR": {
+        "description": "[CONFIG] Restrict results to only those near a particular city",
         "value": "",
         "required": false
     },

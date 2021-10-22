@@ -33,6 +33,7 @@ select {
 }
 
 .ZINbbc {
+    overflow: hidden;
     background-color: var(--whoogle-result-bg) !important;   
 }
 
@@ -172,4 +173,8 @@ path {
     background-color: var(--whoogle-result-bg) !important;
     color: var(--whoogle-text);
     border-bottom: 0px;
+}
+
+.ip-text-div{
+  color: var(--whoogle-secondary-text) !important;
 }
