@@ -26,8 +26,7 @@ SITE_ALTS = {
     'twitter.com': os.getenv('WHOOGLE_ALT_TW', 'nitter.net'),
     'youtube.com': os.getenv('WHOOGLE_ALT_YT', 'invidious.snopyta.org'),
     'instagram.com': os.getenv('WHOOGLE_ALT_IG', 'bibliogram.art/u'),
-    'reddit.com': os.getenv('WHOOGLE_ALT_RD', 'libredd.it'),
-    'medium.com': os.getenv('WHOOGLE_ALT_MD', 'scribe.rip'),
+    'reddit.com': os.getenv('WHOOGLE_ALT_RD', 'libredd.it')
 }
 
 
@@ -73,18 +72,16 @@ def get_site_alt(link: str) -> str:
         str: An updated (or ignored) result link
 
     """
-    # Need to replace full hostname with alternative to encapsulate
-    # subdomains as well
-    hostname = urlparse.urlparse(link).hostname
 
     for site_key in SITE_ALTS.keys():
-        if not hostname or site_key not in hostname:
+        if site_key not in link:
             continue
 
-        link = link.replace(hostname, SITE_ALTS[site_key])
-        for prefix in SKIP_PREFIX:
-            link = link.replace(prefix, '//')
+        link = link.replace(site_key, SITE_ALTS[site_key])
         break
+
+    for prefix in SKIP_PREFIX:
+        link = link.replace(prefix, '//')
 
     return link
 
@@ -138,45 +135,3 @@ def append_nojs(result: BeautifulSoup) -> None:
     nojs_link.string = 'NoJS Link: ' + nojs_link['href']
     result.append(BeautifulSoup('<br><hr><br>', 'html.parser'))
     result.append(nojs_link)
-
-
-def add_ip_card(html_soup: BeautifulSoup, ip: str) -> BeautifulSoup:
-    """Adds the client's IP address to the search results
-        if query contains keywords
-
-    Args:
-        html_soup: The parsed search result containing the keywords
-        ip: ip address of the client
-
-    Returns:
-        BeautifulSoup
-
-    """
-    if (not html_soup.select_one(".EY24We")
-            and html_soup.select_one(".OXXup").get_text().lower() == "all"):
-        # HTML IP card tag
-        ip_tag = html_soup.new_tag("div")
-        ip_tag["class"] = "ZINbbc xpd O9g5cc uUPGi"
-
-        # For IP Address html tag
-        ip_address = html_soup.new_tag("div")
-        ip_address["class"] = "kCrYT ip-address-div"
-        ip_address.string = ip
-
-        # Text below the IP address
-        ip_text = html_soup.new_tag("div")
-        ip_text.string = "Your public IP address"
-        ip_text["class"] = "kCrYT ip-text-div"
-
-        # Adding all the above html tags to the IP card
-        ip_tag.append(ip_address)
-        ip_tag.append(ip_text)
-
-        # Finding the element before which the IP card would be placed
-        f_link = html_soup.select_one(".BNeawe.vvjwJb.AP7Wnd")
-        ref_element = f_link.find_parent(class_="ZINbbc xpd O9g5cc" +
-                                                " uUPGi")
-
-        # Inserting the element
-        ref_element.insert_before(ip_tag)
-    return html_soup

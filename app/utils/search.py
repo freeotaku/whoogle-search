@@ -1,12 +1,12 @@
 import os
-import re
 from typing import Any
 
-from app.filter import Filter, get_first_link
-from app.request import gen_query
 from bs4 import BeautifulSoup as bsoup
 from cryptography.fernet import Fernet, InvalidToken
 from flask import g
+
+from app.filter import Filter, get_first_link
+from app.request import gen_query
 
 TOR_BANNER = '<hr><h1 style="text-align: center">You are using Tor</h1><hr>'
 CAPTCHA = 'div class="g-recaptcha"'
@@ -54,7 +54,6 @@ class Search:
         config: the current user config settings
         session: the flask user session
     """
-
     def __init__(self, request, config, session, cookies_disabled=False):
         method = request.method
         self.request_params = request.args if method == 'GET' else request.form
@@ -162,14 +161,3 @@ class Search:
                 link['href'] += param_str
 
             return str(formatted_results)
-
-    def check_kw_ip(self) -> re.Match:
-        """Checks for keywords related to 'my ip' in the query
-
-        Returns:
-            bool
-
-        """
-        return re.search("([^a-z0-9]|^)my *[^a-z0-9] *(ip|internet protocol)" +
-                         "($|( *[^a-z0-9] *(((addres|address|adres|" +
-                         "adress)|a)? *$)))", self.query.lower())

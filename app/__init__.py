@@ -24,7 +24,7 @@ app.default_key = generate_user_key()
 app.no_cookie_ips = []
 app.config['SECRET_KEY'] = os.urandom(32)
 app.config['SESSION_TYPE'] = 'filesystem'
-app.config['VERSION_NUMBER'] = '0.6.0'
+app.config['VERSION_NUMBER'] = '0.5.4'
 app.config['APP_ROOT'] = os.getenv(
     'APP_ROOT',
     os.path.dirname(os.path.abspath(__file__)))
@@ -35,8 +35,7 @@ app.config['BUILD_FOLDER'] = os.path.join(
     app.config['STATIC_FOLDER'], 'build')
 app.config['CACHE_BUSTING_MAP'] = {}
 app.config['LANGUAGES'] = json.load(open(
-    os.path.join(app.config['STATIC_FOLDER'], 'settings/languages.json'),
-    encoding='utf-8'))
+    os.path.join(app.config['STATIC_FOLDER'], 'settings/languages.json')))
 app.config['COUNTRIES'] = json.load(open(
     os.path.join(app.config['STATIC_FOLDER'], 'settings/countries.json')))
 app.config['TRANSLATIONS'] = json.load(open(
@@ -75,7 +74,8 @@ app.config['CSP'] = 'default-src \'none\';' \
                     'style-src \'self\' \'unsafe-inline\';' \
                     'script-src \'self\';' \
                     'media-src \'self\';' \
-                    'connect-src \'self\';'
+                    'connect-src \'self\';' \
+                    'form-action \'self\';'
 
 if not os.path.exists(app.config['CONFIG_PATH']):
     os.makedirs(app.config['CONFIG_PATH'])

@@ -1,19 +1,14 @@
-import os
 import setuptools
 
 long_description = open('README.md', 'r').read()
 
 requirements = list(open('requirements.txt', 'r'))
 
-optional_dev_tag = ''
-if os.getenv('DEV_BUILD'):
-    optional_dev_tag = '.dev' + os.getenv('DEV_BUILD')
-
 setuptools.setup(
     author='Ben Busby',
-    author_email='contact@benbusby.com',
+    author_email='benbusby@protonmail.com',
     name='whoogle-search',
-    version='0.6.0' + optional_dev_tag,
+    version='0.5.4',
     include_package_data=True,
     install_requires=requirements,
     description='Self-hosted, ad-free, privacy-respecting metasearch engine',
