@@ -2,7 +2,8 @@
 
 [![Latest Release](https://img.shields.io/github/v/release/benbusby/whoogle-search)](https://github.com/benbusby/shoogle/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Build Status](https://travis-ci.com/benbusby/whoogle-search.svg?branch=master)](https://travis-ci.com/benbusby/whoogle-search)
+[![tests](https://github.com/benbusby/whoogle-search/actions/workflows/tests.yml/badge.svg)](https://github.com/benbusby/whoogle-search/actions/workflows/tests.yml)
+[![buildx](https://github.com/benbusby/whoogle-search/actions/workflows/buildx.yml/badge.svg)](https://github.com/benbusby/whoogle-search/actions/workflows/buildx.yml)
 [![pep8](https://github.com/benbusby/whoogle-search/workflows/pep8/badge.svg)](https://github.com/benbusby/whoogle-search/actions?query=workflow%3Apep8)
 [![codebeat badge](https://codebeat.co/badges/e96cada2-fb6f-4528-8285-7d72abd74e8d)](https://codebeat.co/projects/github-com-benbusby-shoogle-master)
 [![Docker Pulls](https://img.shields.io/docker/pulls/benbusby/whoogle-search)](https://hub.docker.com/r/benbusby/whoogle-search)
@@ -38,7 +39,7 @@ Contents
 
 ## Features
 - No ads or sponsored content
-- No javascript
+- No JavaScript
 - No cookies
 - No tracking/linking of your personal IP address\*
 - No AMP links
@@ -72,14 +73,16 @@ If using Heroku Quick Deploy, **you can skip this section**.
 There are a few different ways to begin using the app, depending on your preferences:
 
 ### A) [Heroku Quick Deploy](https://heroku.com/about)
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/benbusby/whoogle-search/tree/heroku-app-beta)
-
-*Note: Requires a (free) Heroku account*
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/benbusby/whoogle-search/tree/main)
 
 Provides:
 - Free deployment of app
 - Free HTTPS url (https://\<your app name\>.herokuapp.com)
 - Downtime after periods of inactivity \([solution](https://github.com/benbusby/whoogle-search#prevent-downtime-heroku-only)\)
+
+Notes: 
+- Requires a (free) Heroku account
+- Sometimes has issues with auto-redirecting to `https`. Make sure to navigate to the `https` version of your app before adding as a default search engine.
 
 ### B) [Repl.it](https://repl.it)
 [![Run on Repl.it](https://repl.it/badge/github/benbusby/whoogle-search)](https://repl.it/github/benbusby/whoogle-search)
@@ -173,7 +176,7 @@ See the [available environment variables](#environment-variables) for additional
 #### systemd Configuration
 After building the virtual environment, you can add the following to `/lib/systemd/system/whoogle.service` to set up a Whoogle Search systemd service:
 
-```
+```ini
 [Unit]
 Description=Whoogle
 
@@ -194,10 +197,11 @@ Description=Whoogle
 #Environment=WHOOGLE_ALT_IG=bibliogram.art/u
 #Environment=WHOOGLE_ALT_RD=libredd.it
 #Environment=WHOOGLE_ALT_TL=lingva.ml
+#Environment=WHOOGLE_ALT_MD=scribe.rip
 # Load values from dotenv only
 #Environment=WHOOGLE_DOTENV=1
 Type=simple
-User=root
+User=<username>
 WorkingDirectory=<whoogle_directory>
 ExecStart=<whoogle_directory>/venv/bin/python3 -um app --host 0.0.0.0 --port 5000
 ExecReload=/bin/kill -HUP $MAINPID
@@ -222,8 +226,6 @@ sudo systemctl start whoogle
 2. Clone and deploy the docker app using a method below:
 
 #### Docker CLI
-
-***Note:** For ARM machines, use the `buildx-experimental` Docker tag.*
 
 Through Docker Hub:
 ```bash
@@ -297,22 +299,24 @@ There are a few optional environment variables available for customizing a Whoog
 - With `docker-compose`: Uncomment the `env_file` option
 - With `docker build/run`: Add `--env-file ./whoogle.env` to your command
 
-| Variable           | Description                                                                               |
-| ------------------ | ----------------------------------------------------------------------------------------- |
-| WHOOGLE_DOTENV     | Load environment variables in `whoogle.env`                                               |
-| WHOOGLE_USER       | The username for basic auth. WHOOGLE_PASS must also be set if used.                       |
-| WHOOGLE_PASS       | The password for basic auth. WHOOGLE_USER must also be set if used.                       |
-| WHOOGLE_PROXY_USER | The username of the proxy server.                                                         |
-| WHOOGLE_PROXY_PASS | The password of the proxy server.                                                         |
-| WHOOGLE_PROXY_TYPE | The type of the proxy server. Can be "socks5", "socks4", or "http".                       |
-| WHOOGLE_PROXY_LOC  | The location of the proxy server (host or ip).                                            |
-| EXPOSE_PORT        | The port where Whoogle will be exposed.                                                   |
-| HTTPS_ONLY         | Enforce HTTPS. (See [here](https://github.com/benbusby/whoogle-search#https-enforcement)) |
-| WHOOGLE_ALT_TW     | The twitter.com alternative to use when site alternatives are enabled in the config.      |
-| WHOOGLE_ALT_YT     | The youtube.com alternative to use when site alternatives are enabled in the config.      |
-| WHOOGLE_ALT_IG     | The instagram.com alternative to use when site alternatives are enabled in the config.    |
-| WHOOGLE_ALT_RD     | The reddit.com alternative to use when site alternatives are enabled in the config.       |
-| WHOOGLE_ALT_TL     | The Google Translate alternative to use. This is used for all "translate ____" searches.  |
+| Variable             | Description                                                                               |
+| -------------------- | ----------------------------------------------------------------------------------------- |
+| WHOOGLE_DOTENV       | Load environment variables in `whoogle.env`                                               |
+| WHOOGLE_USER         | The username for basic auth. WHOOGLE_PASS must also be set if used.                       |
+| WHOOGLE_PASS         | The password for basic auth. WHOOGLE_USER must also be set if used.                       |
+| WHOOGLE_PROXY_USER   | The username of the proxy server.                                                         |
+| WHOOGLE_PROXY_PASS   | The password of the proxy server.                                                         |
+| WHOOGLE_PROXY_TYPE   | The type of the proxy server. Can be "socks5", "socks4", or "http".                       |
+| WHOOGLE_PROXY_LOC    | The location of the proxy server (host or ip).                                            |
+| EXPOSE_PORT          | The port where Whoogle will be exposed.                                                   |
+| HTTPS_ONLY           | Enforce HTTPS. (See [here](https://github.com/benbusby/whoogle-search#https-enforcement)) |
+| WHOOGLE_ALT_TW       | The twitter.com alternative to use when site alternatives are enabled in the config.      |
+| WHOOGLE_ALT_YT       | The youtube.com alternative to use when site alternatives are enabled in the config.      |
+| WHOOGLE_ALT_IG       | The instagram.com alternative to use when site alternatives are enabled in the config.    |
+| WHOOGLE_ALT_RD       | The reddit.com alternative to use when site alternatives are enabled in the config.       |
+| WHOOGLE_ALT_TL       | The Google Translate alternative to use. This is used for all "translate ____" searches.  |
+| WHOOGLE_ALT_MD       | The medium.com alternative to use when site alternatives are enabled in the config.       |
+| WHOOGLE_AUTOCOMPLETE | Controls visibility of autocomplete/search suggestions. Default on -- use '0' to disable  |
 
 ### Config Environment Variables
 These environment variables allow setting default config values, but can be overwritten manually by using the home page config menu. These allow a shortcut for destroying/rebuilding an instance to the same config state every time.
@@ -327,6 +331,7 @@ These environment variables allow setting default config values, but can be over
 | WHOOGLE_CONFIG_THEME           | Set theme mode (light, dark, or system)                         |
 | WHOOGLE_CONFIG_SAFE            | Enable safe searches                                            |
 | WHOOGLE_CONFIG_ALTS            | Use social media site alternatives (nitter, invidious, etc)     |
+| WHOOGLE_CONFIG_NEAR            | Restrict results to only those near a particular city           |
 | WHOOGLE_CONFIG_TOR             | Use Tor routing (if available)                                  |
 | WHOOGLE_CONFIG_NEW_TAB         | Always open results in new tab                                  |
 | WHOOGLE_CONFIG_VIEW_IMAGE      | Enable View Image option                                        |
@@ -479,15 +484,21 @@ A lot of the app currently piggybacks on Google's existing support for fetching 
 ## Public Instances
 
 *Note: Use public instances at your own discretion. Maintainers of Whoogle do not personally validate the integrity of these instances, and popular public instances are more likely to be rate-limited or blocked.*
+	
+| Website | Country | Language | Cloudflare |
+|-|-|-|-|
+| [https://whoogle.sdf.org](https://whoogle.sdf.org) | 🇺🇸 US | Multi-choice |
+| [https://whoogle.kavin.rocks](https://whoogle.kavin.rocks) | 🇮🇳 IN | Unknown | ✅ |
+| [https://search.garudalinux.org](https://search.garudalinux.org) | 🇩🇪 DE | Multi-choice |  |
+| [https://whooglesearch.net](https://whooglesearch.net) | 🇩🇪 DE | Spanish |  |
+| [https://search.flawcra.cc](https://search.flawcra.cc) |🇩🇪 DE | Unknown | ✅ |
+| [https://search.exonip.de](https://search.exonip.de) | 🇳🇱 NL | Multi-choice |  |
+| [https://s.alefvanoon.xyz](https://s.alefvanoon.xyz) | 🇺🇸 US | English | ✅ |
+| [https://search.flux.industries](https://search.flux.industries) | 🇩🇪 DE  | German | ✅ |
+| [http://whoogledq5f5wly5p4i2ohnvjwlihnlg4oajjum2oeddfwqdwupbuhqd.onion](http://whoogledq5f5wly5p4i2ohnvjwlihnlg4oajjum2oeddfwqdwupbuhqd.onion) | 🇮🇳 IN | Unknown |  |
 
-- [https://whoogle.sdf.org](https://whoogle.sdf.org)
-- [https://whoogle.kavin.rocks](https://whoogle.kavin.rocks) or [http://whoogledq5f5wly5p4i2ohnvjwlihnlg4oajjum2oeddfwqdwupbuhqd.onion](http://whoogledq5f5wly5p4i2ohnvjwlihnlg4oajjum2oeddfwqdwupbuhqd.onion)
-- [https://search.garudalinux.org](https://search.garudalinux.org)
-- [https://whooglesearch.net](https://whooglesearch.net)
-- [https://search.flawcra.cc](https://search.flawcra.cc)
-- [https://search.exonip.de](https://search.exonip.de)
-- [https://whoogle.silkky.cloud](https://whoogle.silkky.cloud)
-- [https://s.alefvanboon.xyz](https://s.alefvanboon.xyz)
+* A checkmark in the "Cloudflare" category here refers to the use of the reverse proxy, [Cloudflare](https://cloudflare). The checkmark will not be listed for a site which uses Cloudflare DNS but rather the proxying service which grants Cloudflare the ability to monitor traffic to the website.
+
 ## Screenshots
 #### Desktop
 ![Whoogle Desktop](docs/screenshot_desktop.jpg)

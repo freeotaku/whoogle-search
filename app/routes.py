@@ -8,16 +8,18 @@ import uuid
 from functools import wraps
 
 import waitress
-from flask import jsonify, make_response, request, redirect, render_template, \
-    send_file, session, url_for
-from requests import exceptions
-
 from app import app
 from app.models.config import Config
 from app.request import Request, TorError
 from app.utils.bangs import resolve_bang
-from app.utils.session import generate_user_key, valid_user_session
+from app.utils.misc import read_config_bool
+from app.utils.results import add_ip_card
 from app.utils.search import *
+from app.utils.session import generate_user_key, valid_user_session
+from bs4 import BeautifulSoup as bsoup
+from flask import jsonify, make_response, request, redirect, render_template, \
+    send_file, session, url_for
+from requests import exceptions
 
 # Load DDG bang json files only on init
 bang_json = json.load(open(app.config['BANG_FILE']))
@@ -115,6 +117,11 @@ def healthz():
     return ''
 
 
+@app.route('/home', methods=['GET'])
+def home():
+    return redirect(url_for('.index'))
+
+
 @app.route('/', methods=['GET'])
 @auth_required
 def index():
@@ -173,6 +180,10 @@ def search_html():
 
 @app.route('/autocomplete', methods=['GET', 'POST'])
 def autocomplete():
+    ac_var = 'WHOOGLE_AUTOCOMPLETE'
+    if os.getenv(ac_var) and not read_config_bool(ac_var):
+        return jsonify({})
+
     q = g.request_params.get('q')
     if not q:
         # FF will occasionally (incorrectly) send the q field without a
@@ -240,6 +251,11 @@ def search():
     # Return 503 if temporarily blocked by captcha
     resp_code = 503 if has_captcha(str(response)) else 200
 
+    # Feature to display IP address
+    if search_util.check_kw_ip():
+        html_soup = bsoup(response, "html.parser")
+        response = add_ip_card(html_soup, request.remote_addr)
+
     return render_template(
         'display.html',
         query=urlparse.unquote(query),
@@ -265,7 +281,8 @@ def search():
             query=urlparse.unquote(query),
             search_type=search_util.search_type,
             mobile=g.user_request.mobile)
-                if 'isch' not in search_util.search_type else '')), resp_code
+                       if 'isch' not in
+                          search_util.search_type else '')), resp_code
 
 
 @app.route('/config', methods=['GET', 'POST', 'PUT'])
